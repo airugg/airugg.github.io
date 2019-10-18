@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>SOFTWORE</title>
+	<script src="vue.js"></script>
+	<script src="vue-router.js"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			text-decoration: none;
+		}
+
+		.box_top {
+			padding: 0 20px;
+			position: absolute;
+			top: 0;left: 0;
+			overflow: hidden;
+		}
+
+		.box_top div{
+			float: left;
+		}
+
+		.bg{
+			width: 130px;
+			height: 30px;
+			padding: 20px;
+		}
+
+		.bg img{
+			width: 100%;
+			height: 100%;
+		}
+
+		.ct{
+			padding: 27px;
+		}
+
+		.ct a{
+			color: #fff;
+		}
+
+		.active_bb{
+			border-bottom: 1px solid #fff;
+			padding-bottom: 8px;
+		}
+
+		.N1_body{
+			width: 100%;
+			height: 800px;
+			background: url(1.jpg) 0 0 no-repeat;
+			background-size: 100%;
+			text-align: center;
+		}
+
+		.N1_bgs{
+			padding-top: 340px;
+			height: 83px;
+			display: inline-block;
+			width: 800px;
+		}
+
+		.N1_pa{
+			position: relative;
+			height: 83px;
+			overflow: hidden;
+			width: 100%;
+		}
+
+		.new_cont{
+			color: #fff;
+			position: absolute;
+			width: 100%;
+		}
+
+		.new_cont_z{
+			font-size: 40px;
+			margin-bottom: 5px;
+		}
+
+		.new_cont_y{
+			font-size: 20px;
+		}
+
+		.no1-enter,.no1-leave-to{
+			opacity: 0;
+		}
+
+		.no1-leave-active,.no1-enter-acitve{
+	        transition: 0.5s;
+		}
+	
+		.no1-leave,.no1-enter-to{
+			opacity: 1;
+		}
+
+		.N2_body{
+			width: 100%;
+			height: 350px;
+			background: url(2.jpg) 0 0 no-repeat;
+			background-size: 100%;
+			text-align: center;
+		}
+
+		.N2_conts{
+			padding-top: 350px;
+		}
+
+		.N2_bg{
+			padding-top: 50px;
+			background: url('https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMDkvZGMyODkyNzE4YWUxZTY2NDFmNTlkNmU2YjRjN2JhNmIuanBn.jpg') 0 0 no-repeat;
+			background-size: 100% 100%;
+		}
+
+		.N2_title{
+			font-size: 36px;
+			padding: 20px 0;
+		}
+
+		.N2_title2{
+			color: #999;
+			font-size: 14px;
+			margin-bottom: 30px;
+		}
+
+		.N3_body{
+			width: 100%;
+			height: 350px;
+			background: url(3.jpg) 0 0 no-repeat;
+			background-size: 100%;
+			text-align: center;
+		}
+
+		.N3_conts{
+			padding: 400px 20% 0px;
+			overflow: hidden;
+		}
+
+		.N3_conts_l{
+			float: left;
+			width: 200px;
+			text-align-last: left;
+			line-height: 45px;
+		}
+
+		.N3_conts_l div{
+			border-bottom: 1px solid #ccc;
+			padding-left: 10px;
+			cursor: pointer;
+		}
+
+		.N3_conts_l div:nth-child(3){
+			border-bottom: 0px solid #ccc;
+		}
+
+		.N3_conts_r{
+			margin-left: 240px;
+			text-align: left;
+		}
+
+		.active_color{
+			color: #31c27c;
+		}
+
+		.N3_conts_r_top{
+			font-size: 20px;
+			font-weight: bold;
+			padding: 10px 0;
+			margin-bottom: 20px;
+			border-bottom: 1px solid #ccc;
+			overflow: hidden;
+		}
+
+		.N3_conts_r_top span{
+			float: right;
+			font-size: 12px;
+			font-weight: normal;
+			padding: 5px 15px;
+			border: 1px solid #31c27c;
+			color: #31c27c;
+			border-radius: 20px;
+		}
+
+		.N3_conts_r_cont{
+			overflow: hidden;
+			margin-bottom: 40px;
+		}
+
+		.N3_conts_r_cont_bg{
+			float: left;
+			width: 180px;
+			height: 120px;
+		}
+
+		.N3_conts_r_cont_bg img{
+			width: 100%;
+			height: 100%;
+		}
+
+		.N3_conts_r_cont_rct{
+			margin-left: 200px;
+		}
+
+		.N3_conts_r_cont_rct_tt{
+		    font-size: 16px;
+		    font-family: 微软雅黑;
+		    line-height: 16px;
+		    margin-bottom: 10px;
+		}
+
+		.N3_conts_r_cont_rct_tt a{
+			color: #666666;
+		}
+
+		.N3_conts_r_cont_rct_tt2{
+		    padding-top: 6px;
+		    padding-bottom: 6px;
+		    color: #4cd7de;
+		    font-size: 11px;
+		    line-height: 11px;
+		    margin-bottom: 10px;
+		}
+
+		.N3_conts_r_cont_rct_ct{
+			color: #9e9e9e;
+		    font-size: 12px;
+		    font-family: 微软雅黑;
+		    line-height: 20px;
+		}
+
+		.N3_foot{
+			padding: 380px 15%;
+			text-align: left;
+		}
+
+		.N3_all_t1{
+			font-size: 24px;
+			margin-bottom: 20px;
+		}
+
+		.N3_all_t2{
+			font-size: 14px;
+			margin-bottom: 30px;
+		}
+
+		.N3_all_img{
+			width: 300px;
+			height: 200px;
+			margin-bottom: 20px;
+		}
+
+		.N3_all_img img{
+			width: 100%;
+			height: 100%;
+		}
+
+		.N3_all_cont{
+			font-size: 14px;
+			color: #999;
+			line-height: 30px;
+			margin-bottom: 20px;
+		}
+		
+	</style>
+</head>
+<body>
+	<div id="box">
+		<div class="box_top">
+			<div class="bg">
+				<img src="https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMTAvMmE4YWZmM2RkZmJkYWU5YmFjMjhmOTczNGUzOTE1NWMucG5n.png">
+			</div>
+			<div v-for="(i, $idx) in arr" class="ct">
+				<a @click="type=$idx" :href="i.url" :class="type==$idx?'active_bb':''">{{i.name}}</a>
+			</div>
+		</div>
+
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
+	</div>
+
+	<template id="n1">
+		<div class="N1_body">
+			<div class="N1_bgs">
+				<div class="N1_pa">
+					<transition name='no1' v-for="(i, $idx) in data">
+						<div class="new_cont" v-show="type==$idx">
+							<p class="new_cont_z">{{i.zhong}}</p>
+							<p class="new_cont_y">{{i.ying}}</p>
+						</div>
+					</transition>
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<template id="n2">
+		<div class="N2_body">
+			<div class="N2_conts">
+				<div class="N2_bg">
+					<div class="N2_title">产品发布</div>
+					<div class="N2_title2">応捠捡换攴朰朸妀夲夳夵壱，売圢圤圥圦圧圪咐咑厺厼厽帄帇</div>
+					<div><img src="https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMDkvNGQxZGJmMGU0MTg5YWUxYWU1ZjNmZDkyZjc3OWRhMGItNzY2eDUwMC5wbmc_p_p100_p_3D.png"></div>
+				</div>
+					
+			</div>
+		</div>
+	</template>
+
+	<template id="n3">
+		<div class="N3_body">
+			<div class="N3_conts" v-show="this.$route.path=='/资讯发布'">
+				<div class="N3_conts_l">
+					<div v-for="(i, $idx) in arr" @click="btn(i,$idx)" :class="index==$idx?'active_color':''">{{i}}</div>
+				</div>
+				<div class="N3_conts_r" v-show="type=='全部发布'">
+					<div class="N3_conts_r_top">资讯发布<span>联系我们</span></div>
+					<div v-for="(i, $idx) in data" class="N3_conts_r_cont">
+						<div class="N3_conts_r_cont_bg">
+							<img :src="i.url">
+						</div>
+						<div class="N3_conts_r_cont_rct">
+							<div class="N3_conts_r_cont_rct_tt">
+								<a :href="'#/资讯发布/n3_'+$idx">{{i.title}}</a>
+							</div>
+							<div class="N3_conts_r_cont_rct_tt2">发布日期：2017-03-14</div>
+							<div class="N3_conts_r_cont_rct_ct">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+						</div>
+					</div>
+				</div>
+				<div class="N3_conts_r" v-show="type!='全部发布'">
+					<div class="N3_conts_r_top">资讯发布<span>联系我们</span></div>
+					<div v-for="(i, $idx) in data" v-show="i.name==type">
+						<div class="N3_conts_r_cont_bg">
+							<img :src="i.url">
+						</div>
+						<div class="N3_conts_r_cont_rct">
+							<div class="N3_conts_r_cont_rct_tt">
+								<a :href="'#/资讯发布/n3_'+$idx">{{i.title}}</a>
+							</div>
+							<div class="N3_conts_r_cont_rct_tt2">发布日期：2017-03-14</div>
+							<div class="N3_conts_r_cont_rct_ct">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				
+			<div class="N3_foot">
+				<router-view></router-view>
+			</div>
+		</div>
+	</template>
+
+	<template id="n3_0">
+		<div>
+			<button @click="$router.go(-1)">返回</button>
+			<div class="N3_all_t1">三大能源停征价格调节基金为煤炭资源税改革清路</div>
+			<div class="N3_all_t2">发布日期：2017-03-14 17:23  浏览次数：267	 分类：全部发布</div>
+			<div class="N3_all_img">
+				<img src="https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMTAvMDViZjRkNzAxMDU2NTNkNjI2ODQ2NmY4ZGY4NzFmM2YtMzAweDIwMC5qcGc_p_p100_p_3D.jpg">
+			</div>
+			<div class="N3_all_cont">起飞页推崇用户自己创建网站并享受建站所带来的乐趣，因此我们为您准备了一套安全、稳定、不揪心的自助建站系统：在这里，您只需打字传图、用鼠标自由拖拽，便可在弹指间做出极具专业级别的网站。我们以全球首创的网页线性布局方案和傻瓜式图文编辑为核心，研发出这种颠覆传统的响应式网站制作方式，可以为您节约90%的建站时间。</div>
+			<div class="N3_all_cont">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+			<div class="N3_all_cont">起飞页推崇用户自己创建网站并享受建站所带来的乐趣，因此我们为您准备了一套安全、稳定、不揪心的自助建站系统：在这里，您只需打字传图、用鼠标自由拖拽，便可在弹指间做出极具专业级别的网站。我们以全球首创的网页线性布局方案和傻瓜式图文编辑为核心，研发出这种颠覆传统的响应式网站制作方式，可以为您节约90%的建站时间。</div>
+			<div class="N3_all_cont">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+		</div>
+	</template>
+
+	<template id="n3_1">
+		<div>
+			<button @click="$router.go(-1)">返回</button>
+			<div class="N3_all_t1">北京130多家工业企业采取停限产措施应对雾霾</div>
+			<div class="N3_all_t2">发布日期：2017-03-14 17:23  浏览次数：267	 分类：全部发布</div>
+			<div class="N3_all_img">
+				<img src="https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMTAvOWVmMDY3ODQ0ZDIzZmFiZDA2Y2NkNjVkZGY2MWQyZDgtMzAweDIwMC5qcGc_p_p100_p_3D.jpg">
+			</div>
+			<div class="N3_all_cont">起飞页推崇用户自己创建网站并享受建站所带来的乐趣，因此我们为您准备了一套安全、稳定、不揪心的自助建站系统：在这里，您只需打字传图、用鼠标自由拖拽，便可在弹指间做出极具专业级别的网站。我们以全球首创的网页线性布局方案和傻瓜式图文编辑为核心，研发出这种颠覆传统的响应式网站制作方式，可以为您节约90%的建站时间。</div>
+			<div class="N3_all_cont">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+			<div class="N3_all_cont">起飞页推崇用户自己创建网站并享受建站所带来的乐趣，因此我们为您准备了一套安全、稳定、不揪心的自助建站系统：在这里，您只需打字传图、用鼠标自由拖拽，便可在弹指间做出极具专业级别的网站。我们以全球首创的网页线性布局方案和傻瓜式图文编辑为核心，研发出这种颠覆传统的响应式网站制作方式，可以为您节约90%的建站时间。</div>
+			<div class="N3_all_cont">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+		</div>
+	</template>
+
+	<template id="n3_2">
+		<div>
+			<button @click="$router.go(-1)">返回</button>
+			<div class="N3_all_t1">北京130多家工业企业采取停限产措施应对雾霾</div>
+			<div class="N3_all_t2">发布日期：2017-03-14 17:23  浏览次数：267	 分类：全部发布</div>
+			<div class="N3_all_img">
+				<img src="https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMTAvOWFjMDViN2VmMzVkYmVhOGU5ZTI2MDQ2OGY4M2E1MjEtMzAweDIwMC5qcGc_p_p100_p_3D.jpg">
+			</div>
+			<div class="N3_all_cont">起飞页推崇用户自己创建网站并享受建站所带来的乐趣，因此我们为您准备了一套安全、稳定、不揪心的自助建站系统：在这里，您只需打字传图、用鼠标自由拖拽，便可在弹指间做出极具专业级别的网站。我们以全球首创的网页线性布局方案和傻瓜式图文编辑为核心，研发出这种颠覆传统的响应式网站制作方式，可以为您节约90%的建站时间。</div>
+			<div class="N3_all_cont">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+			<div class="N3_all_cont">起飞页推崇用户自己创建网站并享受建站所带来的乐趣，因此我们为您准备了一套安全、稳定、不揪心的自助建站系统：在这里，您只需打字传图、用鼠标自由拖拽，便可在弹指间做出极具专业级别的网站。我们以全球首创的网页线性布局方案和傻瓜式图文编辑为核心，研发出这种颠覆传统的响应式网站制作方式，可以为您节约90%的建站时间。</div>
+			<div class="N3_all_cont">起飞页的工作团队是一群热爱互联网及软件事业的大伙伴和小伙伴，经验丰富、成熟稳定，基于对网站出版行业的热爱、对人人都能做出精美网站的向往，公司投入一千万元人民币，历时两年时间打造出起飞页平台。截至2015年底，在起飞页上创建的网站已超过10万+。</div>
+		</div>
+	</template>
+</body>
+</html>
+<script type="text/javascript">
+	var router = new VueRouter({
+		routes:[{
+			path: '/',
+			redirect: '/首页'
+		},{
+			path:'/首页',
+			component:{
+				template: '#n1',
+				data(){
+					return {
+						data:[
+							{zhong:'我们无法做到完美，  但追求完美能让人卓越',ying:'Perfection’snot attainable, but if we chase it we can catch excellence.'},
+							{zhong:'我们无法做到完美',ying:'Perfection’snot attainable'},
+							{zhong:'但追求完美能让人卓越',ying:'but if we chase it we can catch excellence.'},
+						],
+						type: 0,
+					}
+				},
+				created(){
+					setInterval(()=>{
+						this.type++
+						if (this.type>=3) {
+							this.type=0
+						}
+					},3000)
+				}
+			}
+		},{
+			path:'/产品发布',
+			component: {
+				template: '#n2'
+			}
+		},{
+			path:'/资讯发布',
+			component: {
+				template: '#n3',
+				data(){
+					return {
+						arr:['全部发布','公司新闻','行业资讯'],
+						data:[{
+							title:'三大能源停征价格调节基金为煤炭资源税改革清路',url:'https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMTAvMDViZjRkNzAxMDU2NTNkNjI2ODQ2NmY4ZGY4NzFmM2YtMTgweDEyMC5qcGc_p_p100_p_3D.jpg',name:'行业资讯'
+						},{
+							title:'北京130多家工业企业采取停限产措施应对雾霾',url:'https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMTAvOWVmMDY3ODQ0ZDIzZmFiZDA2Y2NkNjVkZGY2MWQyZDgtMTgweDEyMC5qcGc_p_p100_p_3D.jpg',name:'公司新闻'
+						},{
+							title:'三大能源停征价格调节基金为煤炭资源税改革清路',url:'https://ccdn.goodq.top/caches/0aa02806352a2c565f61961c812e84a8/aHR0cHM6Ly81N2UyNDNhYWE3NzlhLnQ3My5xaWZlaXllLmNvbS9xZnktY29udGVudC91cGxvYWRzLzIwMTYvMTAvOWFjMDViN2VmMzVkYmVhOGU5ZTI2MDQ2OGY4M2E1MjEtMTgweDEyMC5qcGc_p_p100_p_3D.jpg',name:'行业资讯'
+						}],
+						type:'全部发布',
+						index: 0,
+					}
+				},
+				methods:{
+					btn(a,b){
+						this.type = a;
+						this.index = b;
+					}
+				}
+			},
+			children:[{
+				path: 'n3_0',
+				component:{
+					template: '#n3_0'
+				}
+			},{
+				path: 'n3_1',
+				component:{
+					template: '#n3_1'
+				}
+			},{
+				path: 'n3_2',
+				component:{
+					template: '#n3_2'
+				}
+			}]
+		}]
+	})
+
+	new Vue({
+		el: '#box',
+		router,
+		data:{
+			arr:[
+				{name:'首页',url:'#/首页'},
+				{name:'产品发布',url:'#/产品发布'},
+				{name:'资讯发布',url:'#/资讯发布'}
+			],
+			type: 0,
+		}
+	})
+</script>
