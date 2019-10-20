@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>QQ音乐</title>
+	<link rel="stylesheet" type="text/css" href="style/index.css">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<script src="vue.js"></script>
+	<script src="vue-router.js"></script>
+	<script src="vue-resource.js"></script>
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+	<div id="box">
+		<div class="T_nav">
+			<div class="S_top_nav">
+				<div v-for='(i, $idx) in arr'>
+					<a @click="type=$idx" :href="i.url" :style="{color:type==$idx?'#31c27c':''}">{{i.name}}</a>
+				</div>
+			</div>
+		</div>
+		
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
+		
+		<div class="foot_ap">
+			<audio :src="src" autoplay controls></audio>
+		</div>
+
+	</div>
+
+	<template id="n1">
+		<div class="S_conts">
+			<div class="S_conts_search">
+				<el-input v-model="input" placeholder="搜索音乐、MV、歌单、用户" @focus="f" @blur="b"></el-input>
+				<a v-show="input!=''" :href="'#/y/首页/list/'+input">
+					<div class="S_conts_search_btn el-icon-search"></div>
+				</a>
+				<div class="S_conts_search_hot" v-show="type==1">
+					<div v-for="(i, $idx) in dt">
+						<span>{{$idx+1}}</span>{{i.k}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<template id="n2">
+		<div class="S_list">
+			<div class="S_list_tt">
+				<div>歌曲</div>
+				<div>歌手</div>
+				<div>专辑</div>
+			</div>
+			<div class="S_list_cts">
+				<div class="S_list_ct" v-for="(i, $idx) in dt">
+					<div>
+						<a :href="'#/y/播放列表/'+i.songmid+'/'+i.songname" class="S_list_ct_name">{{i.songname}}</a>
+					</div>
+					<div>
+						<span v-for="j in i.singer">{{j.name}}</span>
+					</div>
+					<div>{{i.albumname}}</div>
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<template id="n3">
+		<div class="B_list">
+			<div v-for="i in arr">
+				<a :href="'#/y/播放列表/'+i.mid+'/'+i.name" class="S_list_ct_name">{{i.name}}</a>
+			</div>
+		</div>
+	</template>
+
+	<template id="n4">
+		<div class="P_list">
+			<div v-for="i in data">
+				<a :href="'#/y/排行榜/'+i.id"><img :src="i.picUrl"></a>
+			</div>
+		</div>
+	</template>
+
+	<template id="n5">
+		<div class="P_list">
+			<div v-for='i in arr'>
+				<a :href="'#/y/播放列表/'+i.data.songmid+'/'+i.data.songname" class="S_list_ct_name">{{i.data.songname}}</a>
+			</div>
+		</div>
+	</template>
+
+	<template id="n6">
+		<div class="P_list">
+			暂时没有数据...
+		</div>
+	</template>
+
+	<template id="n7">
+		<div class="P_list">
+			<div v-for="i in arr" class="P_list_gs">
+				<a :href="'#/y/歌手/'+i.Fsinger_mid">{{i.Fsinger_name}}</a>
+			</div>
+		</div>
+	</template>
+
+	<template id="n8">
+		<div class="G_list">
+			<div class="G_list_top">
+				<div>歌曲</div>
+				<div>专辑</div>
+			</div>
+			<div v-for="(i, $idx) in arr" class="G_list_cont">
+				<span>{{$idx+1}}</span>
+				<div>
+					<a :href="'#/y/播放列表/'+i.musicData.songmid+'/'+i.musicData.songname" class="S_list_ct_name">{{i.musicData.songname}}</a>
+				</div>
+				<div>{{i.musicData.albumname}}</div>
+			</div>
+		</div>
+	</template>
+</body>
+</html>
+<script type="text/javascript">
+	var router = new VueRouter({
+		routes: [{
+			path: '/',
+			redirect: '/y/首页'
+		},{
+			path: '/y/首页',
+			component:{
+				template: '#n1',
+				data() {
+					return {
+						input: '',
+						type: 0,
+						dt: ''
+					}
+				},
+				methods:{
+					f(){
+						this.type = 1;
+						this.$http.jsonp('https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?',{
+							params: {
+								format: 'jsonp',
+								jsonpCallback: 'cb',
+							},
+							jsonpCallback: 'cb',
+						}).then(data =>{
+							// console.log(data.data.data.hotkey)
+							this.dt = data.data.data.hotkey
+						})
+					},
+					b(){
+						this.type = 0;
+					}
+				}
+			}
+		},{
+			path: '/y/首页/list/:songname',
+			component:{
+				template: '#n2',
+				data(){
+					return {
+						dt: ''
+					}
+				},
+				activated(){
+					var val = this.$route.params.songname;
+					this.$http.jsonp('https://c.y.qq.com/soso/fcgi-bin/client_search_cp',{
+						params: {
+							g_tk:5381,
+							p:1,
+							n:200,
+							w:val,
+							format:'jsonp',
+							jsonpCallback:'callback',
+							loginUin:0,
+							hostUin:0,
+							inCharset:'utf8',
+							outCharset:'utf-8',
+							notice:0,
+							platform:'yqq',
+							needNewCode:0,
+							remoteplace:'txt.yqq.song',
+							t:0,
+							aggr:1,
+							cr:1,
+							catZhida:1,
+							flag_qc:0,
+						},
+						jsonpCallback: 'callback',
+					}).then(data =>{
+						// console.log(data.data.data.song.list)
+						this.dt = data.data.data.song.list
+					})
+				}
+			}
+		},{
+			path: '/y/播放列表/:mid/:name',
+			component:{
+				template: '#n3',
+				data(){
+					return {
+						arr: []
+					}
+				},
+				activated(){
+					if(this.$route.params.name != ':name'){
+						this.arr.push({name:this.$route.params.name,mid:this.$route.params.mid})
+					}
+				}
+			}
+		},{
+			path: '/y/排行榜',
+			component:{
+				template: '#n4',
+				data(){
+					return {
+						data: ''
+					}
+				},
+				activated(){
+					this.$http.jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg?g_tk=5381&uin=0&format=jsonp&jsonpCallback=callback&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1512554796112',{
+						params:{
+							format:'jsonp',
+							jsonpCallback:'callback',
+						},
+						jsonpCallback: 'callback',
+					}).then(data=>{
+						// console.log(data.data.data)
+						this.data = data.data.data.topList
+					})
+				}
+			}
+		},{
+			path: '/y/排行榜/:pid',
+			component:{
+				template: '#n5',
+				data(){
+					return {
+						arr: ''
+					}
+				},
+				activated(){
+					var pid = this.$route.params.pid
+					// console.log(pid)
+					this.$http.jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?g_tk=5381&uin=0&format=jsonp&jsonpCallback=callback&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&tpl=3&page=detail&type=top&topid='+pid+'&_=1512563984096',{jsonpCallback: 'callback',
+					}).then(data=>{
+						// console.log(data.data.songlist)
+						this.arr = data.data.songlist
+					})
+				}
+			}
+		},{
+			path: '/y/歌单',
+			component: {
+				template: '#n6',
+				activated(){
+					this.$http.jsonp('https://u.y.qq.com/cgi-bin/musicu.fcg?callback=recom3477297233556247&g_tk=1278911659&jsonpCallback=recom3477297233556247&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8¬ice=0&platform=yqq&needNewCode=0&data={"comm":{"ct":24},"category":{"method":"get_hot_category","param":{"qq":""},"module":"music.web_category_svr"},"recomPlaylist":{"method":"get_hot_recommend","param":{"async":1,"cmd":2},"module":"playlist.HotRecommendServer"},"playlist":{"method":"get_playlist_by_category","param":{"id":8,"curPage":1,"size":40,"order":5,"titleid":8},"module":"playlist.PlayListPlazaServer"},"new_song":{"module":"QQMusic.MusichallServer","method":"GetNewSong","param":{"type":0}},"new_album":{"module":"QQMusic.MusichallServer","method":"GetNewAlbum","param":{"type":0,"category":"-1","genre":0,"year":1,"company":-1,"sort":1,"start":0,"end":39}},"toplist":{"module":"music.web_toplist_svr","method":"get_toplist_index","param":{}},"focus":{"module":"QQMusic.MusichallServer","method":"GetFocus","param":{}}}',{
+						params:{
+							format:'json',
+							jsonpCallback:'callback',
+						},
+						jsonpCallback: 'callback',
+					}).then(data=>{
+						// console.log(data)
+					})
+				}
+			}
+		},{
+			path: '/y/歌手',
+			component: {
+				template: '#n7',
+				data(){
+					return {
+						arr: ''
+					}
+				},
+				activated(){
+					this.$http.jsonp('https://c.y.qq.com/v8/fcg-bin/v8.fcg?channel=singer&page=list&key=all_all_all&pagesize=100&pagenum=1&g_tk=5381&jsonpCallback=callback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0',{
+						jsonpCallback: 'callback',
+					}).then(data=>{
+						// console.log(data.data.data)
+						this.arr = data.data.data.list
+					})
+				}
+			}
+		},{
+			path: '/y/歌手/:gim',
+			component:{
+				template: '#n8',
+				data(){
+					return {
+						arr: ''
+					}
+				},
+				activated(){
+					var gim = this.$route.params.gim
+					this.$http.jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg?g_tk=5381&jsonpCallback=callback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&singermid='+gim+'&order=listen&begin=0&num=30&songstatus=1',{
+						jsonpCallback: 'callback',
+					}).then(data=>{
+						// console.log(data.data.data)
+						this.arr = data.data.data.list
+					})
+				}
+			}
+		}]
+	})
+
+	new Vue({
+		el: '#box',
+		router,
+		data:{
+			src:'',
+			arr:[
+				{name:'首页',url:'#/y/首页'},
+				{name:'排行榜',url:'#/y/排行榜'},
+				{name:'歌单',url:'#/y/歌单'},
+				{name:'歌手',url:'#/y/歌手'},
+				{name:'播放列表',url:'#/y/播放列表/:mid/:name'}
+			],
+			type: 0
+		},
+		watch:{
+			'$route.params.mid'(a,b){
+				if (a) {
+					if ('/y/播放列表/:mid/:name'!=this.$route.path) {
+						this.$http.jsonp('https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg',{
+							params: {
+								g_tk:1278911659,
+									hostUin:0,
+									format:'jsonp',
+									callback:'callback',
+									inCharset:'utf8',
+									outCharset:'utf-8',
+									notice:0,
+									platform:'yqq',
+									needNewCode:0,
+									cid:205361747,
+									uin:0,
+									songmid:a,
+									filename:'C400' + a + '.m4a',
+									guid:3655047200,
+							},
+							jsonpCallback: 'callback',
+						}).then(data =>{
+							// console.log(data);
+							this.src = `http://dl.stream.qqmusic.qq.com/${data.data.data.items[0].filename}?vkey=${data.data.data.items[0].vkey}&guid=3655047200&fromtag=66`
+						})
+					}
+				}
+			},
+			'$route.path'(a,b){
+				// console.log(a.split('/'))
+				var mid = a.split('/')[3];
+				var name = a.split('/')[4];
+				if (a =='/y/播放列表/:mid/:name' || a == `/y/播放列表/${mid}/${name}`) {
+					this.type = 4
+				}
+			}
+		},
+	})
+</script>
