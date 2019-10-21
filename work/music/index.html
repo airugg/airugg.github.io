@@ -17,7 +17,7 @@
 		<div class="T_nav">
 			<div class="S_top_nav">
 				<div v-for='(i, $idx) in arr'>
-					<a @click="type=$idx" :href="i.url" :style="{color:type==$idx?'#31c27c':''}">{{i.name}}</a>
+					<a :href="'#'+i.url" :style="{color:$route.path.split('/')[2]==i.url.split('/')[2]?'#31c27c':''}">{{i.name}}</a>
 				</div>
 			</div>
 		</div>
@@ -317,13 +317,12 @@
 		data:{
 			src:'',
 			arr:[
-				{name:'首页',url:'#/y/首页'},
-				{name:'排行榜',url:'#/y/排行榜'},
-				{name:'歌单',url:'#/y/歌单'},
-				{name:'歌手',url:'#/y/歌手'},
-				{name:'播放列表',url:'#/y/播放列表/:mid/:name'}
-			],
-			type: 0
+				{name:'首页',url:'/y/首页'},
+				{name:'排行榜',url:'/y/排行榜'},
+				{name:'歌单',url:'/y/歌单'},
+				{name:'歌手',url:'/y/歌手'},
+				{name:'播放列表',url:'/y/播放列表/:mid/:name'}
+			]
 		},
 		watch:{
 			'$route.params.mid'(a,b){
@@ -352,14 +351,6 @@
 							this.src = `http://dl.stream.qqmusic.qq.com/${data.data.data.items[0].filename}?vkey=${data.data.data.items[0].vkey}&guid=3655047200&fromtag=66`
 						})
 					}
-				}
-			},
-			'$route.path'(a,b){
-				// console.log(a.split('/'))
-				var mid = a.split('/')[3];
-				var name = a.split('/')[4];
-				if (a =='/y/播放列表/:mid/:name' || a == `/y/播放列表/${mid}/${name}`) {
-					this.type = 4
 				}
 			}
 		},
